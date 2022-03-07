@@ -35,6 +35,5 @@ const typeDefs = gql`
     thought(_id: ID!): Thought
   }
 `;
-
 // export the typeDefs
 module.exports = typeDefs;
