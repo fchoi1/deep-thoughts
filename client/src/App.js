@@ -21,10 +21,26 @@ import {
   createHttpLink
 } from '@apollo/client';
 
-// Apollo client stuff
+// for auth to create middleware
+import { setContext } from '@apollo/client/link/context';
 
+// Apollo client stuff
 const httpLink = createHttpLink({ uri: '/graphql' });
-const client = new ApolloClient({ link: httpLink, cache: new InMemoryCache() });
+// dont need to use first argument of setContext (request)
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
 function App() {
   return (
     <ApolloProvider client={client}>

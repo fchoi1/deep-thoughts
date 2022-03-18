@@ -13,7 +13,7 @@ module.exports = {
     // search for token
     let token = req.body.token || req.query.token || req.headers.authorization;
 
-    if (req.header.authorization) {
+    if (req.headers.authorization) {
       // separate "Bearer" from token valuee
       token = token.split(' ').pop().trim();
     }
